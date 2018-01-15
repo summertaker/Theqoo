@@ -33,6 +33,7 @@ public class TheqooParser extends BaseParser {
             String title = "";
             String date = "";
             String url = "";
+            int comment = 0;
 
             Element el;
 
@@ -40,6 +41,8 @@ public class TheqooParser extends BaseParser {
             if (a == null) {
                 continue;
             }
+            //Log.e(mTag, a.outerHtml());
+
             url = "http://theqoo.net" + a.attr("href");
 
             Element ul = li.select("ul").first();
@@ -53,11 +56,18 @@ public class TheqooParser extends BaseParser {
             el = ul.select(".date").first();
             date = el.text();
 
-            Log.e(mTag, title + " " + url);
+            el = li.select(".reply").first();
+            if (el != null) {
+                comment = Integer.parseInt(el.text().trim());
+                title = title + " (" + comment + ")";
+            }
+
+            //Log.e(mTag, title + " " + url);
 
             Article article = new Article();
             article.setTitle(title);
             article.setDate(date);
+            article.setComment(comment);
             article.setUrl(url);
 
             articles.add(article);
@@ -69,7 +79,7 @@ public class TheqooParser extends BaseParser {
             return;
         }
 
-        Log.e(mTag, article.getTitle());
+        //Log.e(mTag, article.getTitle());
 
         Document doc = Jsoup.parse(html);
 
@@ -83,10 +93,19 @@ public class TheqooParser extends BaseParser {
 
         article.setContent(content);
 
+        boolean download = false;
+
         ArrayList<String> images = new ArrayList<>();
         for (Element img : root.select("img")) {
             String src = img.attr("src");
             //Log.e(mTag, "src: " + src);
+
+            // https://ssl.pstatic.net/static/pwe/nm/btn_savepc.png // 다운로드 아이콘
+            // http://mail1.daumcdn.net/mail_static/mint/img/big/img_down.png
+            if (src.contains("pstatic.net") || src.contains("daumcdn.net")) {
+                download = true;
+                continue;
+            }
 
             if (src.toLowerCase().contains(".gif")) {
                 continue;
@@ -96,7 +115,8 @@ public class TheqooParser extends BaseParser {
 
             content = content.replaceAll(img.outerHtml(), "");
         }
-        article.setImages(images);
+
+        article.setDownload(download);
 
         //------------------------------------------------
         // 이미지 텍스트 URL
@@ -116,6 +136,15 @@ public class TheqooParser extends BaseParser {
 
             images.add(src);
         }
+
+        article.setImages(images);
+
+        parseYoutube(root, content, images);
+
+        article.setTwitter(content.contains("twitter.com"));
+        article.setInstagram(content.contains("instagram.com"));
+        boolean isVideo = content.contains("youtube.com") || content.contains("nmv.naver.com");
+        article.setVideo(isVideo);
     }
 }
 

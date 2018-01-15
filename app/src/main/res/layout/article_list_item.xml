@@ -23,6 +23,7 @@
         android:paddingStart="10dp"
         android:paddingTop="10dp">
 
+        <!-- 제목 -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
@@ -66,6 +67,7 @@
                 android:visibility="gone" />
             -->
 
+            <!-- 공유 링크 -->
             <TextView
                 android:id="@+id/tvShare"
                 android:layout_width="wrap_content"
@@ -74,6 +76,7 @@
                 android:textColor="#1976D2"
                 android:textSize="16sp" />
 
+            <!-- 날자 -->
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
@@ -83,6 +86,46 @@
                 android:textSize="16sp" />
 
         </LinearLayout>
+
+        <!-- 트위터 아이콘 -->
+        <ImageView
+            android:id="@+id/ivTwitter"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/twitter64"
+            android:visibility="gone" />
+
+        <!-- 인스타그램 아이콘 -->
+        <ImageView
+            android:id="@+id/ivInstagram"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/instagram64"
+            android:visibility="gone" />
+
+        <!-- 동영상 아이콘 -->
+        <ImageView
+            android:id="@+id/ivVideo"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/play64"
+            android:visibility="gone" />
+
+        <!-- 다운로드 아이콘 -->
+        <ImageView
+            android:id="@+id/ivDownload"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/cloud64"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -95,6 +138,7 @@
         android:visibility="gone" />
     -->
 
+    <!-- 이미지 목록 -->
     <HorizontalScrollView
         android:id="@+id/hsImage"
         android:layout_width="match_parent"
@@ -115,9 +159,10 @@
 
     </HorizontalScrollView>
 
+    <!-- 이미지 카운터 -->
     <TextView
         android:id="@+id/tvImageCounter"
-        style="@style/WarningLabel"
+        style="@style/InfoLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

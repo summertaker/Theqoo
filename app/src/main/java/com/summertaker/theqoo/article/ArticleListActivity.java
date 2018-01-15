@@ -120,13 +120,13 @@ public class ArticleListActivity extends BaseActivity implements ArticleListInte
     }
 
     private void requestData(final String url) {
-        Log.e(mTag, url);
+        //Log.e(mTag, url);
 
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Log.e(mTag, "requestData().onResponse()...\n" + response);
-                writeData(url, response);
+                parseData(url, response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -153,22 +153,11 @@ public class ArticleListActivity extends BaseActivity implements ArticleListInte
         BaseApplication.getInstance().addToRequestQueue(strReq, mTag);
     }
 
-    private void writeData(String url, String response) {
-        Util.writeToFile(Util.getUrlToFileName(url) + ".html", response);
-        parseData(url, response);
-    }
-
     private void parseData(String url, String response) {
         if (response.isEmpty()) {
             Util.alert(mContext, getString(R.string.error), "Response is empty.", null);
         } else {
-            if (url.contains("&document_srl=")) {
-                //-------------------
-                // 글 상세 파싱하기
-                //-------------------
-                mParser.parseDetail(response, mPageArticles.get(mArticleIndex));
-                mArticleIndex++;
-            } else {
+            if (url.contains("/index.php?")) {
                 //-------------------
                 // 글 목록 파싱하기
                 //-------------------
@@ -181,6 +170,12 @@ public class ArticleListActivity extends BaseActivity implements ArticleListInte
                 } else {
                     mAllArticles.addAll(mPageArticles);
                 }
+            } else {
+                //-------------------
+                // 글 상세 파싱하기
+                //-------------------
+                mParser.parseDetail(response, mPageArticles.get(mArticleIndex));
+                mArticleIndex++;
             }
 
             loadDetail();

@@ -7,8 +7,13 @@ public class Article {
     private String title;
     private String date;
     private String content;
+    private int comment;
     private String url;
     private ArrayList<String> images;
+    private boolean twitter;
+    private boolean instagram;
+    private boolean video;
+    private boolean download;
 
     public String getTitle() {
         return title;
@@ -34,6 +39,14 @@ public class Article {
         this.content = content;
     }
 
+    public int getComment() {
+        return comment;
+    }
+
+    public void setComment(int comment) {
+        this.comment = comment;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -48,5 +61,37 @@ public class Article {
 
     public void setImages(ArrayList<String> images) {
         this.images = images;
+    }
+
+    public boolean isTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(boolean twitter) {
+        this.twitter = twitter;
+    }
+
+    public boolean isInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(boolean instagram) {
+        this.instagram = instagram;
+    }
+
+    public boolean isVideo() {
+        return video;
+    }
+
+    public void setVideo(boolean video) {
+        this.video = video;
+    }
+
+    public boolean isDownload() {
+        return download;
+    }
+
+    public void setDownload(boolean download) {
+        this.download = download;
     }
 }

@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.summertaker.theqoo.R;
@@ -45,7 +47,7 @@ public class ArticleListAdapter extends BaseDataAdapter {
         this.mArticleListInterface = articleListInterface;
 
         float density = mContext.getResources().getDisplayMetrics().density;
-        int height = (int) (250 * density);
+        int height = (int) (100 * density);
         int margin = (int) (1 * density);
         mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
         mParams.setMargins(0, 0, margin, 0);
@@ -81,6 +83,10 @@ public class ArticleListAdapter extends BaseDataAdapter {
             holder.tvDate = convertView.findViewById(R.id.tvDate);
             //holder.tvToday = convertView.findViewById(R.id.tvToday);
             holder.tvShare = convertView.findViewById(R.id.tvShare);
+            holder.ivTwitter = convertView.findViewById(R.id.ivTwitter);
+            holder.ivInstagram = convertView.findViewById(R.id.ivInstagram);
+            holder.ivVideo = convertView.findViewById(R.id.ivVideo);
+            holder.ivDownload = convertView.findViewById(R.id.ivDownload);
             holder.tvImageCounter = convertView.findViewById(R.id.tvImageCounter);
 
             convertView.setTag(holder);
@@ -121,29 +127,7 @@ public class ArticleListAdapter extends BaseDataAdapter {
                     }
                 });
 
-                String fileName = Util.getUrlToFileName(imageUrl);
-                File file = new File(Config.DATA_PATH, fileName);
-
-                if (file.exists()) {
-                    Picasso.with(mContext).load(file).into(iv);
-                    //Log.d(mTag, fileName + " local loaded.");
-                } else {
-                    //Picasso.with(mContext).load(R.drawable.placeholder_320x240).into(iv);
-                    Picasso.with(mContext).load(imageUrl).placeholder(R.drawable.placeholder_320x240).into(iv,
-                            new com.squareup.picasso.Callback() {
-                                @Override
-                                public void onSuccess() {
-
-                                }
-
-                                @Override
-                                public void onError() {
-                                    Log.e(mTag, ">> PICASSO IMAGE LOAD ERROR...");
-                                }
-                            });
-
-                    Picasso.with(mContext).load(imageUrl).into(getTarget(fileName));
-                }
+                Glide.with(mContext).load(imageUrl).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(iv);
             }
 
             // 이미지 갯수 출력
@@ -164,6 +148,13 @@ public class ArticleListAdapter extends BaseDataAdapter {
             }
         });
 
+        holder.tvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mArticleListInterface.onShareClick(article);
+            }
+        });
+
         holder.tvDate.setText(article.getDate());
 
         //if (article.getDate().length() == 5) {
@@ -172,62 +163,28 @@ public class ArticleListAdapter extends BaseDataAdapter {
         //    holder.tvToday.setVisibility(View.GONE);
         //}
 
-        holder.tvShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mArticleListInterface.onShareClick(article);
-            }
-        });
+        if (article.isTwitter()) {
+            holder.ivTwitter.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivTwitter.setVisibility(View.GONE);
+        }
+        if (article.isInstagram()) {
+            holder.ivInstagram.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivInstagram.setVisibility(View.GONE);
+        }
+        if (article.isVideo()) {
+            holder.ivVideo.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivVideo.setVisibility(View.GONE);
+        }
+        if (article.isDownload()) {
+            holder.ivDownload.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivDownload.setVisibility(View.GONE);
+        }
 
         return convertView;
-    }
-
-    //target to save
-    private Target getTarget(final String fileName) {
-        Target target = new Target() {
-
-            @Override
-            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        boolean isSuccess;
-
-                        File file = new File(Config.DATA_PATH, fileName);
-                        if (file.exists()) {
-                            isSuccess = file.delete();
-                            //Log.d("==", fileName + " deleted.");
-                        }
-                        try {
-                            isSuccess = file.createNewFile();
-                            if (isSuccess) {
-                                FileOutputStream ostream = new FileOutputStream(file);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-                                ostream.flush();
-                                ostream.close();
-                                //Log.d("==", fileName + " created.");
-                            } else {
-                                Log.e(mTag, fileName + " FAILED.");
-                            }
-                        } catch (IOException e) {
-                            Log.e("IOException", e.getLocalizedMessage());
-                        }
-                    }
-                }).start();
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                Log.e(mTag, ">> PICASSO IMAGE SAVE ERROR...");
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-        return target;
     }
 
     static class ViewHolder {
@@ -237,6 +194,10 @@ public class ArticleListAdapter extends BaseDataAdapter {
         TextView tvDate;
         TextView tvShare;
         //TextView tvToday;
+        ImageView ivTwitter;
+        ImageView ivInstagram;
+        ImageView ivVideo;
+        ImageView ivDownload;
         TextView tvImageCounter;
     }
 }

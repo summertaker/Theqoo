@@ -27,11 +27,11 @@ public class BaseApplication extends Application {
         mInstance = this;
 
         mSites.add(new Site("재팬스퀘어", "http://theqoo.net/index.php?mid=japan&filter_mode=normal&category=26063&page="));
-        mSites.add(new Site("坂道46", "http://theqoo.net/index.php?mid=jdol&filter_mode=normal&category=29770&page="));
+        mSites.add(new Site("坂道", "http://theqoo.net/index.php?mid=jdol&filter_mode=normal&category=29770&page="));
         mSites.add(new Site("48스퀘어", "http://theqoo.net/index.php?mid=talk48&filter_mode=normal&category=161632742&page="));
         mSites.add(new Site("48돌", "http://theqoo.net/index.php?mid=dol48&filter_mode=normal&page="));
         mSites.add(new Site("하로프로", "http://theqoo.net/index.php?mid=jdol&filter_mode=normal&category=26384&page="));
-        mSites.add(new Site("플레이", "http://theqoo.net/index.php?_filter=search&mid=japan&category=26063&search_keyword=플레이보이&search_target=title&page="));
+        //mSites.add(new Site("플레이", "http://theqoo.net/index.php?_filter=search&mid=japan&category=26063&search_keyword=플레이보이&search_target=title&page="));
     }
 
     public static synchronized BaseApplication getInstance() {
