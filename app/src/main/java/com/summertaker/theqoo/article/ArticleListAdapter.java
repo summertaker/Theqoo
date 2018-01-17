@@ -47,7 +47,7 @@ public class ArticleListAdapter extends BaseDataAdapter {
         this.mArticleListInterface = articleListInterface;
 
         float density = mContext.getResources().getDisplayMetrics().density;
-        int height = (int) (100 * density);
+        int height = (int) (150 * density);
         int margin = (int) (1 * density);
         mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
         mParams.setMargins(0, 0, margin, 0);
@@ -79,6 +79,7 @@ public class ArticleListAdapter extends BaseDataAdapter {
 
             holder.hsImage = convertView.findViewById(R.id.hsImage);
             holder.loImage = convertView.findViewById(R.id.loImage);
+            holder.ivPicture = convertView.findViewById(R.id.ivPicture);
             holder.tvTitle = convertView.findViewById(R.id.tvTitle);
             holder.tvDate = convertView.findViewById(R.id.tvDate);
             //holder.tvToday = convertView.findViewById(R.id.tvToday);
@@ -96,47 +97,63 @@ public class ArticleListAdapter extends BaseDataAdapter {
 
         if (article.getImages() == null || article.getImages().size() == 0) {
             holder.hsImage.setVisibility(View.GONE);
+            holder.ivPicture.setVisibility(View.GONE);
             holder.tvImageCounter.setVisibility(View.GONE);
         } else {
-            holder.hsImage.setVisibility(View.VISIBLE);
-            holder.loImage.removeAllViews();
-
-            // 이미지 로드
-            for (int i = 0; i < article.getImages().size(); i++) {
-                //Log.e(TAG, "url[" + i + "]: " + imageArray[i]);
-
-                final String imageUrl = article.getImages().get(i);
-                if (imageUrl.isEmpty()) {
-                    continue;
-                }
-
-                //final ProportionalImageView iv = new ProportionalImageView(mContext);
-                ImageView iv = new ImageView(mContext);
-                if (i == 0) {
-                    iv.setLayoutParams(mParamsNoMargin);
-                } else {
-                    iv.setLayoutParams(mParams);
-                }
-                iv.setAdjustViewBounds(true);
-                //iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                holder.loImage.addView(iv);
-                iv.setOnClickListener(new View.OnClickListener() {
+            if (article.getImages().size() == 1) {
+                holder.hsImage.setVisibility(View.GONE);
+                holder.tvImageCounter.setVisibility(View.GONE);
+                holder.ivPicture.setVisibility(View.VISIBLE);
+                final String imageUrl = article.getImages().get(0);
+                holder.ivPicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mArticleListInterface.onImageClick(article, imageUrl);
                     }
                 });
-
-                Glide.with(mContext).load(imageUrl).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(iv);
-            }
-
-            // 이미지 갯수 출력
-            if (article.getImages().size() > 2) {
-                holder.tvImageCounter.setVisibility(View.VISIBLE);
-                String imageCount = article.getImages().size() + "";
-                holder.tvImageCounter.setText(imageCount);
+                Glide.with(mContext).load(imageUrl).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(holder.ivPicture);
             } else {
-                holder.tvImageCounter.setVisibility(View.GONE);
+                holder.hsImage.setVisibility(View.VISIBLE);
+                holder.loImage.removeAllViews();
+                holder.ivPicture.setVisibility(View.GONE);
+
+                // 이미지 로드
+                for (int i = 0; i < article.getImages().size(); i++) {
+                    //Log.e(TAG, "url[" + i + "]: " + imageArray[i]);
+
+                    final String imageUrl = article.getImages().get(i);
+                    if (imageUrl.isEmpty()) {
+                        continue;
+                    }
+
+                    //final ProportionalImageView iv = new ProportionalImageView(mContext);
+                    ImageView iv = new ImageView(mContext);
+                    if (i == 0) {
+                        iv.setLayoutParams(mParamsNoMargin);
+                    } else {
+                        iv.setLayoutParams(mParams);
+                    }
+                    iv.setAdjustViewBounds(true);
+                    //iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    holder.loImage.addView(iv);
+                    iv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mArticleListInterface.onImageClick(article, imageUrl);
+                        }
+                    });
+
+                    Glide.with(mContext).load(imageUrl).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(iv);
+                }
+
+                // 이미지 갯수 출력
+                if (article.getImages().size() > 2) {
+                    holder.tvImageCounter.setVisibility(View.VISIBLE);
+                    String imageCount = article.getImages().size() + "";
+                    holder.tvImageCounter.setText(imageCount);
+                } else {
+                    holder.tvImageCounter.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -190,6 +207,7 @@ public class ArticleListAdapter extends BaseDataAdapter {
     static class ViewHolder {
         HorizontalScrollView hsImage;
         LinearLayout loImage;
+        ImageView ivPicture;
         TextView tvTitle;
         TextView tvDate;
         TextView tvShare;

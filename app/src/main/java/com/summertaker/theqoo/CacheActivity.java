@@ -66,7 +66,8 @@ public class CacheActivity extends BaseActivity {
     }
 
     private void showCache() {
-        long size = Util.getDirectorySize(new File(Config.DATA_PATH));
+        File file = new File(Config.DATA_PATH);
+        long size = Util.getDirectorySize(file);
         size = size / (1024 * 1024);
         //Log.e(mTag, "size:" + size); // mega bytes
 

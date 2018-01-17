@@ -46,10 +46,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 if (mNavId == R.id.nav_login) {
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivity(intent);
-                } else if (mNavId == R.id.nav_cache) {
+                } /* else if (mNavId == R.id.nav_cache) {
                     Intent intent = new Intent(mContext, CacheActivity.class);
                     startActivity(intent);
-                }
+                } */
                 mNavId = 0;
             }
 

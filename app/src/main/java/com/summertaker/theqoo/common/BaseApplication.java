@@ -31,7 +31,13 @@ public class BaseApplication extends Application {
         mSites.add(new Site("48스퀘어", "http://theqoo.net/index.php?mid=talk48&filter_mode=normal&category=161632742&page="));
         mSites.add(new Site("48돌", "http://theqoo.net/index.php?mid=dol48&filter_mode=normal&page="));
         mSites.add(new Site("하로프로", "http://theqoo.net/index.php?mid=jdol&filter_mode=normal&category=26384&page="));
-        //mSites.add(new Site("플레이", "http://theqoo.net/index.php?_filter=search&mid=japan&category=26063&search_keyword=플레이보이&search_target=title&page="));
+        mSites.add(new Site("베스트", "http://theqoo.net/index.php?mid=tbest&filter_mode=normal&page="));
+        mSites.add(new Site("스퀘어", "http://theqoo.net/index.php?mid=square&filter_mode=normal&page="));
+        mSites.add(new Site("배수지", "http://theqoo.net/index.php?mid=actor&filter_mode=normal&category=244812790&page="));
+        mSites.add(new Site("한효주", "http://theqoo.net/index.php?mid=actor&filter_mode=normal&category=244743249&page="));
+        //mSites.add(new Site("러블리즈", "http://theqoo.net/index.php?mid=kdol&filter_mode=normal&category=244170055&page="));
+        //mSites.add(new Site("레드벨벳", "http://theqoo.net/index.php?mid=kdol&filter_mode=normal&category=244170129&page="));
+        //mSites.add(new Site("여자친구", "http://theqoo.net/index.php?mid=kdol&filter_mode=normal&category=388541893&page="));
     }
 
     public static synchronized BaseApplication getInstance() {
