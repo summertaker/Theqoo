@@ -1,8 +1,12 @@
 package com.summertaker.theqoo.article;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -26,7 +30,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArticleListActivity extends BaseActivity implements ArticleListInterface {
+public class ArticleListActivity extends AppCompatActivity implements ArticleListInterface {
+
+    private String mTag = "== " + getClass().getSimpleName();
+
+    private Context mContext;
 
     private int mPage = 1;
     private boolean mIsLoading = false;
@@ -56,7 +64,21 @@ public class ArticleListActivity extends BaseActivity implements ArticleListInte
         String title = intent.getStringExtra("title");
         mUrl = intent.getStringExtra("url");
 
-        initToolbar(title);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+            actionBar.setTitle(title);
+        }
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onToolbarClick();
+            }
+        });
 
         mLoLoading = findViewById(R.id.loLoading);
         mLoLoadMore = findViewById(R.id.loLoadMore);

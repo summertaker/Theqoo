@@ -47,7 +47,7 @@ public class ArticleListAdapter extends BaseDataAdapter {
         this.mArticleListInterface = articleListInterface;
 
         float density = mContext.getResources().getDisplayMetrics().density;
-        int height = (int) (150 * density);
+        int height = (int) (200 * density);
         int margin = (int) (1 * density);
         mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
         mParams.setMargins(0, 0, margin, 0);
@@ -117,8 +117,12 @@ public class ArticleListAdapter extends BaseDataAdapter {
                 holder.loImage.removeAllViews();
                 holder.ivPicture.setVisibility(View.GONE);
 
+                int imageMax = 5;
+                int imageCount = article.getImages().size();
+                if (imageCount > imageMax) imageCount = imageMax;
+
                 // 이미지 로드
-                for (int i = 0; i < article.getImages().size(); i++) {
+                for (int i = 0; i < imageCount; i++) {
                     //Log.e(TAG, "url[" + i + "]: " + imageArray[i]);
 
                     final String imageUrl = article.getImages().get(i);
@@ -147,13 +151,9 @@ public class ArticleListAdapter extends BaseDataAdapter {
                 }
 
                 // 이미지 갯수 출력
-                if (article.getImages().size() > 2) {
-                    holder.tvImageCounter.setVisibility(View.VISIBLE);
-                    String imageCount = article.getImages().size() + "";
-                    holder.tvImageCounter.setText(imageCount);
-                } else {
-                    holder.tvImageCounter.setVisibility(View.GONE);
-                }
+                holder.tvImageCounter.setVisibility(View.VISIBLE);
+                String countText = (article.getImages().size() > imageMax) ? imageMax + "+" : article.getImages().size() + "";
+                holder.tvImageCounter.setText(countText);
             }
         }
 

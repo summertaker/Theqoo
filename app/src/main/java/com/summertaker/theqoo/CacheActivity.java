@@ -85,4 +85,14 @@ public class CacheActivity extends BaseActivity {
 
         showCache();
     }
+
+    @Override
+    protected void onSwipeRight() {
+        finish();
+    }
+
+    @Override
+    protected void onSwipeLeft() {
+
+    }
 }

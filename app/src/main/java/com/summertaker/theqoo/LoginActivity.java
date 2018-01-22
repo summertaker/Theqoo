@@ -151,4 +151,14 @@ public class LoginActivity extends BaseActivity {
 
         BaseApplication.getInstance().addToRequestQueue(strReq, mTag);
     }
+
+    @Override
+    protected void onSwipeRight() {
+        finish();
+    }
+
+    @Override
+    protected void onSwipeLeft() {
+
+    }
 }
